@@ -8,7 +8,8 @@ xOffset = 0.87,
 i = 0,
 rings = 2;
 flower = [
-	
+	{x: 0, y:0},
+
 	{x: 0, y: -radius},
 	{x: radius * xOffset, y: -radius / 2},
 	{x: radius * xOffset, y: radius / 2},
@@ -21,7 +22,14 @@ flower = [
 	{x:  radius * 2 * xOffset, y:  radius * 2 / 2},
 	{x: 0 , y:  radius * 2},
 	{x:  -radius * 2 * xOffset, y:  radius * 2 / 2},
-	{x:  -radius * 2 * xOffset, y:  -radius * 2 / 2}
+	{x:  -radius * 2 * xOffset, y:  -radius * 2 / 2},
+	
+	{x: 0, y: -radius * 3},
+	{x: radius * 3 * xOffset, y: -radius * 3 / 2},
+	{x:  radius * 3 * xOffset, y:  radius * 3 / 2},
+	{x: 0 , y:  radius * 2},
+	{x:  -radius * 3 * xOffset, y:  radius * 3 / 2},
+	{x:  -radius * 3 * xOffset, y:  -radius * 3 / 2}
 ],
 circles = new Array(),
 drawTimer = Date.now();
@@ -37,18 +45,16 @@ var drawCircle = function(x, y, penTip) {
 	context.closePath();
 };
 function Circle(x,y) {
-	this.x = x;
-	this.y = y;
+	this.x = x + game.screen.width / 2;
+	this.y = y + game.screen.height / 2;
 	this.drawn = false;
 	this.penTip = 0;
 }
 var createCircles = function () {
 	for(var i = 0; i < rings; i++) {
 		var 
-			
-		x = game.screen.width / 2,
-		y = game.screen.height / 2;
-		ring = i + 1;
+		x = 0, y = 0,
+		ring = i + 1,
 		offsetRing = radius * ring;
 		
 		for(var j = 0; j < 6; j++) {
@@ -113,9 +119,10 @@ var createCircles = function () {
 		}
 	}
 };
+
 var createCircles = function() {
 	for(var i = 0; i < flower.length; i++) {
-		circles.push(new Circle(game.screen.width / 2 + flower[i].x, game.screen.height / 2 + flower[i].y))
+		circles.push(new Circle(flower[i].x, flower[i].y))
 	}
 };
 var drawRing = function() {
@@ -128,8 +135,6 @@ var drawRing = function() {
 
 
 var tick = function() {
-	//Draw first circle
-	drawCircle(game.screen.width / 2, game.screen.height / 2, 2);
 	if(Date.now() - drawTimer >= 1000 && i < circles.length) {
 		circles[i].drawn = true;
 		i++;
